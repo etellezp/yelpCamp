@@ -1,0 +1,23 @@
+{
+  "name": "yelp_camp",
+  "version": "1.0.0",
+  "description": "yelp camp app ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etellezp/yelpCamp.git"
+  },
+  "author": "Enrique Tellez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/etellezp/yelpCamp/issues"
+  },
+  "homepage": "https://github.com/etellezp/yelpCamp#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
