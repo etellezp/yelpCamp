@@ -1,23 +1,33 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 
+mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.set("view engine", "ejs");
 
-var campgrounds = [
-  {name: "Salmon Creek", image: "http://photosforclass.com/download/pixabay-1845906?webUrl=https%3A%2F%2Fpixabay.com%2Fget%2Fe83db50a21f4073ed1584d05fb1d4e97e07ee3d21cac104497f6c27aa3e9bcbe_960.jpg&user=Pexels"},
-  {name: "Granite Hill", image: "http://photosforclass.com/download/flickr-4684194306"},
-  {name: "Mountain Goat's Rest", image: "http://photosforclass.com/download/flickr-8444469474"}
-];
+// SCHEMA SETUP
+
+var campgroundSchema = new mongoose.Schema ({
+  name: String,
+  image: String
+});
+
+var Campground = mongoose.model("Campground", campgroundSchema);
 
 app.get("/", function (req, res) {
   res.render("landing");
 });
 
 app.get("/campgrounds", function (req, res) {
-  res.render("campgrounds", {campgrounds: campgrounds});
+  Campground.find({}, function(err, campgrounds) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("campgrounds", {campgrounds:campgrounds});
+    }
+  });
 });
 
 app.post("/campgrounds", function (req, res) {
@@ -25,7 +35,13 @@ app.post("/campgrounds", function (req, res) {
   var image = req.body.image;
   var newCampground = {name: name, image: image};
   
-  campgrounds.push(newCampground);
+  Campground.create(newCampground, function(err, newlyCreated){
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect("/campgrounds");
+    }
+  });
   
   res.redirect("/campgrounds");
 });
