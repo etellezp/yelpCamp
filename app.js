@@ -2,9 +2,12 @@ var express   = require("express"),
 app = express(),
 bodyParser = require("body-parser"),
 mongoose = require("mongoose"),
+passport = require("passport"),
+LocalStrategy = require("passport-local"),
 Campground = require("./models/campground"),
 Comment = require("./models/comment"),
-seedDB = require("./seeds")
+User = require("./models/user"),
+seedDB = require("./seeds");
 
 seedDB();
 
@@ -69,7 +72,7 @@ app.get("/campgrounds/:id/comments/new", function(req, res) {
     } else {
       res.render("comments/new", {campground: campground});
     }
-  })
+  });
 });
 
 app.post("/campgrounds/:id/comments", function(req, res) {
@@ -86,9 +89,9 @@ app.post("/campgrounds/:id/comments", function(req, res) {
           campground.save();
           res.redirect("/campgrounds/" + campground._id);
         }
-      })
+      });
     }
-  })
+  });
 });
 
 app.listen(process.env.PORT, process.env.IP, function () {
